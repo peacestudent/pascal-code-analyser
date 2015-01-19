@@ -18,19 +18,45 @@ namespace CodeParser
         //    return lines;
         //}
 
-        public string ParseLines(List<string> lines)
+        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
+        string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
+
+        public string DoWork(string textString)
         {
-            List<string> textLines = lines;
-            var result = "";
-
-            foreach (var line in textLines)
-            {
-                
-            }
-
+            string result = RemoveReturns(textString);
+            result = CheckChar(result);
             return result;
+
         }
 
+        public string RemoveReturns(string text)
+        {
+            string myString = text.Replace("\n", " ");
+            return myString;
+        }
+
+        private string CheckChar(string myString)
+        {
+            //compare char to predefined array
+            string tempString = null;
+            for (int i = 0; i < myString.Length; i++)
+			{
+                
+                tempString = tempString + myString[i];
+                foreach (var item in keywords)
+                {
+                    if (tempString == item)
+                    {
+                        
+                        break;
+                    }
+                }
+			}
+            return tempString;
+        }
+
+
+        //public List<char> CharCollection { get; set; }
     }
 
 

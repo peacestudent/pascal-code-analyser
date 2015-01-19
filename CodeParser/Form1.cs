@@ -23,21 +23,26 @@ namespace CodeParser
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LexicAnalyzer lex = new LexicAnalyzer();
-            dataGridView1.Columns.Add("keywords", "Keywords");
-            dataGridView1.Columns.Add("seperators", "Separators");
-            int j = 0;
-            for (int i = 0; i < keywords.Length; i++)
-            { 
-                if (j < separators.Length)
-                {
-                    dataGridView1.Rows.Add(keywords[i], separators[j]);
-                    j++;
+            //fills gridview with the 2 predefined arrays of keywords and seperators
+            if ( dataGridView1.Columns.Count<1)
+            {
+                LexicAnalyzer lex = new LexicAnalyzer();
+                dataGridView1.Columns.Add("keywords", "Keywords");
+                dataGridView1.Columns.Add("seperators", "Separators");
+                int j = 0;
+                for (int i = 0; i < keywords.Length; i++)
+                { 
+                    if (j < separators.Length)
+                    {
+                        dataGridView1.Rows.Add(keywords[i], separators[j]);
+                        j++;
+                    }
+                    else
+                    dataGridView1.Rows.Add(keywords[i],"");
                 }
-                else
-                dataGridView1.Rows.Add(keywords[i],"");
+                var result = lex.DoWork(this.richTextBox1.Text);
+                MessageBox.Show(result);
             }
-            var result = lex.ParseLines(this.richTextBox1.Lines.ToList());
         }
     }
 }
