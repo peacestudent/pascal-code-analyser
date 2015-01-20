@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,14 +19,21 @@ namespace CodeParser
         //    return lines;
         //}
 
-        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
         string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
+        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
+        string[] keywordAction = {" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+", };
+
+        string[] identifiers = {};
+        string[] literals = {};
+
+
+
 
         public string DoWork(string textString)
         {
             string result = RemoveReturns(textString);
-            result = CheckChar(result);
-            return result;
+            return CheckChar(result);
+            
 
         }
 
@@ -47,8 +55,7 @@ namespace CodeParser
                 {
                     if (tempString == item)
                     {
-                        
-                        break;
+                        //keywordAction[item]
                     }
                 }
 			}
