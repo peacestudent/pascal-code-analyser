@@ -21,8 +21,8 @@ namespace CodeParser
 
         string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
         string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
-        string[] keywordAction = {" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+", };
-
+        //string[] keywordAction = {" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+", };
+        string[] regxForIdent = { @" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+|\w+:" };
         string[] identifiers = {};
         string[] literals = {};
 
@@ -46,20 +46,43 @@ namespace CodeParser
         private string CheckChar(string myString)
         {
             //compare char to predefined array
-            string tempString = null;
-            for (int i = 0; i < myString.Length; i++)
-			{
-                
-                tempString = tempString + myString[i];
-                foreach (var item in keywords)
+            //string tempString = null;
+            //while (myString!=null)
+            //{
+                //for (int i = 0; i < myString.Length; i++)
+                //{
+
+                //    tempString = tempString + myString[i];
+                //    foreach (var item in keywords)
+                //    {
+                //        if (tempString == item)
+                //        {
+                //            //keywordAction[item]
+                //        }
+                //    }
+                //}
+
+                //removes keywords from begining of string
+            foreach (var item in keywords)
                 {
-                    if (tempString == item)
+                    if (myString.Trim().StartsWith(item))
                     {
-                        //keywordAction[item]
+                        myString = myString.Substring(item.Length);
                     }
                 }
-			}
-            return tempString;
+                //removes separators from begining of string
+                foreach (var item in separators)
+                {
+                    if (myString.Trim().StartsWith(item))
+                    {
+                        myString = myString.Substring(item.Length);
+                    }
+                }
+
+                //check if match regex
+                
+            //}
+            return myString;
         }
 
 
