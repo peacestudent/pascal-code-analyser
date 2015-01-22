@@ -15,6 +15,7 @@ namespace CodeParser
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
@@ -40,9 +41,18 @@ namespace CodeParser
                     else
                     dataGridView1.Rows.Add(keywords[i],"");
                 }
+
+               
+
                 var result = lex.DoWork(this.richTextBox1.Text);
+
+                listBoxIdentifiers.DataSource = lex.identifiers;
+                listBoxLiterals.DataSource = lex.literals;
+
                 MessageBox.Show(result);
             }
         }
+
+        
     }
 }

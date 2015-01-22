@@ -20,11 +20,14 @@ namespace CodeParser
         //}
 
         string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
-        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "not", "EoF", "IntToStr", "do" };
+        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "while not", "EoF", "IntToStr", "do" };
         //string[] keywordAction = {" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+", };
         string[] regxForIdent = { @" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+|\w+:" };
-        string[] identifiers = {};
-        string[] literals = {};
+        public List<string> identifiers = new List<string>();
+        public List<string> literals = new List<string>();
+
+
+       
 
 
 
@@ -32,8 +35,13 @@ namespace CodeParser
         public string DoWork(string textString)
         {
             string result = RemoveReturns(textString);
-            return CheckChar(result);
-            
+
+            SyntaxAnalyzer syntax = new SyntaxAnalyzer();
+            syntax.BeginEndCount(textString);
+            syntax.IfThenCount(textString);
+
+            return RgxMatching(result);
+
 
         }
 
@@ -47,8 +55,8 @@ namespace CodeParser
         {
             //compare char to predefined array
             //string tempString = null;
-            //while (myString!=null)
-            //{
+            while (myString != null)
+            {
                 //for (int i = 0; i < myString.Length; i++)
                 //{
 
@@ -63,7 +71,7 @@ namespace CodeParser
                 //}
 
                 //removes keywords from begining of string
-            foreach (var item in keywords)
+                foreach (var item in keywords)
                 {
                     if (myString.Trim().StartsWith(item))
                     {
@@ -79,16 +87,43 @@ namespace CodeParser
                     }
                 }
 
+                RgxMatching(myString);
                 //check if match regex
-                
-            //}
+                //String rgx = (@" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+"); //name of procedure
+                //MatchCollection coll = Regex.Matches(myString, rgx);
+                //String result = coll[0].Value;
+                //identifiers.Add(result);
+                //myString = myString.Substring(result.Length);
+
+                //rgx = (@"\(([A-Z]+\w+: *[A-Z]+\w+)\)"); //procedure signature in ()
+
+            }
+            return myString;
+
+        }
+
+
+        public string RgxMatching(string myString)
+        {
+            List<string> rgx = new List<string>();
+            rgx.Add("procedure (([A-Z]|[0-9])\\w+\\.([A-Z]|[0-9])\\w+)");  //procedure name
+            rgx.Add("\\(([A-Z]+\\w+: *[A-Z]+\\w+)\\)");         //procedure signature in ()
+            rgx.Add("");
+
+            string result = null;
+            foreach (var item in rgx)
+	        {
+                MatchCollection coll = Regex.Matches(myString, item);
+                result = coll[0].Groups[1].Value;
+                identifiers.Add(result);
+	        }
+            
             return myString;
         }
 
 
-        //public List<char> CharCollection { get; set; }
-    }
 
+    }
 
 
     
@@ -105,7 +140,7 @@ begin
     begin
         ShowMessage('Please enter data');
         exit
-    end
+    end;
     else
         Reset(F);
     i:=StrTofloat(CEdit1.Text);

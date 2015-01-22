@@ -28,10 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.listBoxLiterals = new System.Windows.Forms.ListBox();
+            this.listBoxIdentifiers = new System.Windows.Forms.ListBox();
+            this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.form1BindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.lexicAnalyzerBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lexicAnalyzerBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -63,17 +72,50 @@
             this.dataGridView1.Size = new System.Drawing.Size(245, 510);
             this.dataGridView1.TabIndex = 2;
             // 
+            // listBoxLiterals
+            // 
+            this.listBoxLiterals.FormattingEnabled = true;
+            this.listBoxLiterals.Location = new System.Drawing.Point(818, 13);
+            this.listBoxLiterals.Name = "listBoxLiterals";
+            this.listBoxLiterals.Size = new System.Drawing.Size(147, 511);
+            this.listBoxLiterals.TabIndex = 4;
+            // 
+            // listBoxIdentifiers
+            // 
+            this.listBoxIdentifiers.FormattingEnabled = true;
+            this.listBoxIdentifiers.Location = new System.Drawing.Point(638, 13);
+            this.listBoxIdentifiers.Name = "listBoxIdentifiers";
+            this.listBoxIdentifiers.Size = new System.Drawing.Size(174, 511);
+            this.listBoxIdentifiers.TabIndex = 5;
+            // 
+            // form1BindingSource
+            // 
+            this.form1BindingSource.DataSource = typeof(CodeParser.Form1);
+            // 
+            // form1BindingSource1
+            // 
+            this.form1BindingSource1.DataSource = typeof(CodeParser.Form1);
+            // 
+            // lexicAnalyzerBindingSource
+            // 
+            this.lexicAnalyzerBindingSource.DataSource = typeof(CodeParser.LexicAnalyzer);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1059, 532);
+            this.Controls.Add(this.listBoxIdentifiers);
+            this.Controls.Add(this.listBoxLiterals);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lexicAnalyzerBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -83,6 +125,11 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ListBox listBoxLiterals;
+        private System.Windows.Forms.BindingSource form1BindingSource;
+        private System.Windows.Forms.BindingSource form1BindingSource1;
+        private System.Windows.Forms.BindingSource lexicAnalyzerBindingSource;
+        private System.Windows.Forms.ListBox listBoxIdentifiers;
     }
 }
 
