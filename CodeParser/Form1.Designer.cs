@@ -37,6 +37,8 @@
             this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.form1BindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.lexicAnalyzerBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource1)).BeginInit();
@@ -75,17 +77,17 @@
             // listBoxLiterals
             // 
             this.listBoxLiterals.FormattingEnabled = true;
-            this.listBoxLiterals.Location = new System.Drawing.Point(818, 13);
+            this.listBoxLiterals.Location = new System.Drawing.Point(818, 26);
             this.listBoxLiterals.Name = "listBoxLiterals";
-            this.listBoxLiterals.Size = new System.Drawing.Size(147, 511);
+            this.listBoxLiterals.Size = new System.Drawing.Size(147, 498);
             this.listBoxLiterals.TabIndex = 4;
             // 
             // listBoxIdentifiers
             // 
             this.listBoxIdentifiers.FormattingEnabled = true;
-            this.listBoxIdentifiers.Location = new System.Drawing.Point(638, 13);
+            this.listBoxIdentifiers.Location = new System.Drawing.Point(638, 26);
             this.listBoxIdentifiers.Name = "listBoxIdentifiers";
-            this.listBoxIdentifiers.Size = new System.Drawing.Size(174, 511);
+            this.listBoxIdentifiers.Size = new System.Drawing.Size(174, 498);
             this.listBoxIdentifiers.TabIndex = 5;
             // 
             // form1BindingSource
@@ -100,11 +102,31 @@
             // 
             this.lexicAnalyzerBindingSource.DataSource = typeof(CodeParser.LexicAnalyzer);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(638, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Identifiers";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(815, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Literals";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1059, 532);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.listBoxIdentifiers);
             this.Controls.Add(this.listBoxLiterals);
             this.Controls.Add(this.dataGridView1);
@@ -117,6 +139,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lexicAnalyzerBindingSource)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -130,6 +153,8 @@
         private System.Windows.Forms.BindingSource form1BindingSource1;
         private System.Windows.Forms.BindingSource lexicAnalyzerBindingSource;
         private System.Windows.Forms.ListBox listBoxIdentifiers;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

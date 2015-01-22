@@ -21,8 +21,7 @@ namespace CodeParser
 
         string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
         string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "while not", "EoF", "IntToStr", "do" };
-        //string[] keywordAction = {" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+", };
-        string[] regxForIdent = { @" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+|\w+:" };
+
         public List<string> identifiers = new List<string>();
         public List<string> literals = new List<string>();
 
@@ -40,7 +39,9 @@ namespace CodeParser
             syntax.BeginEndCount(textString);
             syntax.IfThenCount(textString);
 
-            return RgxMatching(result);
+            RgxMatchLiterals(result);
+            RgxMatchIdentifiers(result);
+            return result;
 
 
         }
@@ -51,9 +52,9 @@ namespace CodeParser
             return myString;
         }
 
+        //compare char to keywords and separators and removes them from begining of string
         private string CheckChar(string myString)
         {
-            //compare char to predefined array
             //string tempString = null;
             while (myString != null)
             {
@@ -86,42 +87,104 @@ namespace CodeParser
                         myString = myString.Substring(item.Length);
                     }
                 }
-
-                RgxMatching(myString);
-                //check if match regex
-                //String rgx = (@" ([A-Z]|[0-9])\w+\.([A-Z]|[0-9])\w+"); //name of procedure
-                //MatchCollection coll = Regex.Matches(myString, rgx);
-                //String result = coll[0].Value;
-                //identifiers.Add(result);
-                //myString = myString.Substring(result.Length);
-
-                //rgx = (@"\(([A-Z]+\w+: *[A-Z]+\w+)\)"); //procedure signature in ()
-
             }
             return myString;
 
         }
 
 
-        public string RgxMatching(string myString)
+        public string RgxMatchIdentifiers(string myString)
         {
-            List<string> rgx = new List<string>();
-            rgx.Add("procedure (([A-Z]|[0-9])\\w+\\.([A-Z]|[0-9])\\w+)");  //procedure name
-            rgx.Add("\\(([A-Z]+\\w+: *[A-Z]+\\w+)\\)");         //procedure signature in ()
-            rgx.Add("");
+            List<string> rgxIdentifiers = new List<string>();
+
+            rgxIdentifiers.Add("(([A-Z]|[0-9])\\w+)\\."); //procedure name first part
+            rgxIdentifiers.Add("\\.(([A-Z]|[0-9])\\w+)"); //procedure name second part
+            rgxIdentifiers.Add("(\\w+):"); //variables ending with :
+            rgxIdentifiers.Add("(\\w+\\))");
+            rgxIdentifiers.Add("(:\\w+)");
+            rgxIdentifiers.Add("(\\w+):=");
 
             string result = null;
-            foreach (var item in rgx)
+            foreach (var item in rgxIdentifiers)
 	        {
                 MatchCollection coll = Regex.Matches(myString, item);
-                result = coll[0].Groups[1].Value;
-                identifiers.Add(result);
+                //myString = item.Replace(myString, " ");   //doesn't work
+                foreach (var c in coll)
+                {
+                    result = c.ToString();
+
+
+                    //removes separatos at the begining
+                    if (separators.Any(x => result.StartsWith(x)))
+                    {
+                        result = result.Substring(1);
+                    }
+                    //removes separators at the end
+                    if (separators.Any(x => result.EndsWith(x)))
+                    {
+                        result = result.Remove(result.Length - 1);
+                    }
+                    //removes : from words ending with :=
+                    if (result.EndsWith(":"))
+                    {
+                        result = result.Remove(result.Length - 1);
+                    }
+                     
+                    //bool resultEndsWith = separators.Any(x => result.EndsWith(x));
+
+                    //does NOT add if already contains the same
+                    if (!identifiers.Contains(result))
+                    {
+                        identifiers.Add(result);
+                    }
+                    
+                }
 	        }
             
             return myString;
         }
 
+        public string RgxMatchLiterals(string myString)
+        {
+            List<string> rgxLiterals = new List<string>();
 
+            rgxLiterals.Add("'([^']*?)'"); //text between ''
+            rgxLiterals.Add("[0-9]+;");
+
+            string result = null;
+            foreach (var item in rgxLiterals)
+            {
+                MatchCollection coll = Regex.Matches(myString, item);
+                //myString = item.Replace(myString, " ");   //doesn't work
+                foreach (var c in coll)
+                {
+                    result = c.ToString();
+
+
+                    //removes ' at the begining
+                    if (result.StartsWith("'"))
+                    {
+                        result = result.Substring(1);
+                    }
+                    //removes ' at the end
+                    if (result.EndsWith("'") | result.EndsWith(";"))
+                    {
+                        result = result.Remove(result.Length - 1);
+                    }
+
+                    //bool resultEndsWith = separators.Any(x => result.EndsWith(x));
+
+                    //does NOT add if already contains the same or is null or empty
+                    if (!string.IsNullOrEmpty(result) && !literals.Contains(result))
+                    {
+                        literals.Add(result);
+                    }
+
+                }
+            }
+
+            return myString;
+        }
 
     }
 
