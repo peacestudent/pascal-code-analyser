@@ -36,11 +36,11 @@ namespace CodeParser
             string result = RemoveReturns(textString);
 
             SyntaxAnalyzer syntax = new SyntaxAnalyzer();
-            syntax.BeginEndCount(textString);
-            syntax.IfThenCount(textString);
+            result = syntax.CheckOpenClosing(result);
 
             RgxMatchLiterals(result);
             RgxMatchIdentifiers(result);
+
             return result;
 
 

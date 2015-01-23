@@ -27,7 +27,7 @@ namespace CodeParser
             //fills gridview with the 2 predefined arrays of keywords and seperators
             if ( dataGridView1.Columns.Count<1)
             {
-                LexicAnalyzer lex = new LexicAnalyzer();
+                
                 dataGridView1.Columns.Add("keywords", "Keywords");
                 dataGridView1.Columns.Add("seperators", "Separators");
                 int j = 0;
@@ -41,16 +41,15 @@ namespace CodeParser
                     else
                     dataGridView1.Rows.Add(keywords[i],"");
                 }
-
-               
-
-                var result = lex.DoWork(this.richTextBox1.Text);
-
-                listBoxIdentifiers.DataSource = lex.identifiers;
-                listBoxLiterals.DataSource = lex.literals;
-
-                MessageBox.Show(result);
             }
+
+            LexicAnalyzer lex = new LexicAnalyzer();
+            var result = lex.DoWork(this.richTextBox1.Text);
+
+            listBoxIdentifiers.DataSource = lex.identifiers;
+            listBoxLiterals.DataSource = lex.literals;
+
+            MessageBox.Show(result);
         }
 
         

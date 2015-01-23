@@ -10,6 +10,25 @@ namespace CodeParser
     class SyntaxAnalyzer
     {
 
+        
+        public string CheckOpenClosing (string myString)
+        {
+            string result = myString;
+            if (!BeginEndCount(myString))
+            {
+                result = "Begin - End count doesn't match";
+            }
+            else if (!IfThenCount(myString))
+            {
+                result = "IF - THEN count doesn't match";
+            }
+            else if (!BracketCount(myString))
+            {
+                result = "Open and closing bracket count doesn't match";
+            }
+            return result;
+        }
+        
         public bool BeginEndCount(string myString)
         {
             string rgxBegin = "begin";
@@ -32,6 +51,20 @@ namespace CodeParser
             MatchCollection collIf = Regex.Matches(myString, rgxIf);
             MatchCollection collThen = Regex.Matches(myString, rgxThen);
             if (collIf.Count == collThen.Count)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool BracketCount (string myString)
+        {
+            string rgxOpenBr = "\\(";
+            string rgxClosingBr = "\\)";
+            MatchCollection OpenBrColl = Regex.Matches(myString, rgxOpenBr);
+            MatchCollection ClosingBrColl = Regex.Matches(myString, rgxClosingBr);
+
+            if (OpenBrColl.Count == ClosingBrColl.Count)
             {
                 return true;
             }
