@@ -20,7 +20,8 @@ namespace CodeParser
         //}
 
         string[] separators = { "(", ")", ".", ",", ":", ";", "'", "<", "+", "=", ":=" };
-        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit", "Reset", "StrTofloat", "Text", "while", "while not", "EoF", "IntToStr", "do" };
+        string[] keywords = { "procedure", "Sender", "var", "extended", "rec", "integer", "begin", "end", "if", "else", "and", "then", "ShowMessage", "exit",
+                                "Reset", "StrTofloat", "Text", "while", "while not", "EoF", "IntToStr", "do", "Read" };
 
         public List<string> identifiers = new List<string>();
         public List<string> literals = new List<string>();
@@ -33,13 +34,15 @@ namespace CodeParser
 
         public string DoWork(string textString)
         {
-            string result = RemoveReturns(textString);
+            string myString = RemoveReturns(textString);
+            string result = null;
 
             SyntaxAnalyzer syntax = new SyntaxAnalyzer();
-            result = syntax.CheckOpenClosing(result);
+            result = syntax.CheckOpenClosing(myString);
+            syntax.IfThenAnalyzer(myString);
 
-            RgxMatchLiterals(result);
-            RgxMatchIdentifiers(result);
+            RgxMatchLiterals(myString);
+            RgxMatchIdentifiers(myString);
 
             return result;
 
@@ -92,6 +95,19 @@ namespace CodeParser
 
         }
 
+        public bool CheckForKeywordsAndSeparators(string myString)
+        {
+            bool result = false; 
+            foreach (var item in keywords)
+            {
+                if (myString.Contains(item))
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
 
         public string RgxMatchIdentifiers(string myString)
         {
@@ -100,9 +116,9 @@ namespace CodeParser
             rgxIdentifiers.Add("(([A-Z]|[0-9])\\w+)\\."); //procedure name first part
             rgxIdentifiers.Add("\\.(([A-Z]|[0-9])\\w+)"); //procedure name second part
             rgxIdentifiers.Add("(\\w+):"); //variables ending with :
-            rgxIdentifiers.Add("(\\w+\\))");
-            rgxIdentifiers.Add("(:\\w+)");
-            rgxIdentifiers.Add("(\\w+):=");
+            rgxIdentifiers.Add("(\\w+\\))"); //text and numbers in brackets
+            rgxIdentifiers.Add("(:\\w+)"); //text and numbers after :
+            rgxIdentifiers.Add("(\\w+):="); //text and numbers before :=
 
             string result = null;
             foreach (var item in rgxIdentifiers)
@@ -112,8 +128,7 @@ namespace CodeParser
                 foreach (var c in coll)
                 {
                     result = c.ToString();
-
-
+                    
                     //removes separatos at the begining
                     if (separators.Any(x => result.StartsWith(x)))
                     {
@@ -129,7 +144,7 @@ namespace CodeParser
                     {
                         result = result.Remove(result.Length - 1);
                     }
-                     
+
                     //bool resultEndsWith = separators.Any(x => result.EndsWith(x));
 
                     //does NOT add if already contains the same
@@ -137,10 +152,8 @@ namespace CodeParser
                     {
                         identifiers.Add(result);
                     }
-                    
                 }
 	        }
-            
             return myString;
         }
 
@@ -149,7 +162,7 @@ namespace CodeParser
             List<string> rgxLiterals = new List<string>();
 
             rgxLiterals.Add("'([^']*?)'"); //text between ''
-            rgxLiterals.Add("[0-9]+;");
+            rgxLiterals.Add("[0-9]+;"); //numbers before ;
 
             string result = null;
             foreach (var item in rgxLiterals)
@@ -159,8 +172,6 @@ namespace CodeParser
                 foreach (var c in coll)
                 {
                     result = c.ToString();
-
-
                     //removes ' at the begining
                     if (result.StartsWith("'"))
                     {
@@ -171,18 +182,13 @@ namespace CodeParser
                     {
                         result = result.Remove(result.Length - 1);
                     }
-
-                    //bool resultEndsWith = separators.Any(x => result.EndsWith(x));
-
                     //does NOT add if already contains the same or is null or empty
                     if (!string.IsNullOrEmpty(result) && !literals.Contains(result))
                     {
                         literals.Add(result);
                     }
-
                 }
             }
-
             return myString;
         }
 

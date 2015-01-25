@@ -13,7 +13,7 @@ namespace CodeParser
         
         public string CheckOpenClosing (string myString)
         {
-            string result = myString;
+            string result = "OK";
             if (!BeginEndCount(myString))
             {
                 result = "Begin - End count doesn't match";
@@ -32,7 +32,7 @@ namespace CodeParser
         public bool BeginEndCount(string myString)
         {
             string rgxBegin = "begin";
-            string rgxEnd = "end;";
+            string rgxEnd = " end;";
             MatchCollection beginColl = Regex.Matches(myString, rgxBegin);
             MatchCollection endColl = Regex.Matches(myString, rgxEnd);
 
@@ -75,10 +75,18 @@ namespace CodeParser
         {
             string rgxIfThen = " if (.*) then ";
             MatchCollection collIfThen = Regex.Matches(myString, rgxIfThen);
+
+
             return false;
         }
 
-
+        public string ProcedureCheck(string myString)
+        {
+            string rgxProc = "";
+            MatchCollection collIfThen = Regex.Matches(myString, rgxProc);
+            string result = null;
+            return result;
+        }
 
     }
 }

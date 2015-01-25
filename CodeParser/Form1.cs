@@ -43,15 +43,14 @@ namespace CodeParser
                 }
             }
 
-            LexicAnalyzer lex = new LexicAnalyzer();
-            var result = lex.DoWork(this.richTextBox1.Text);
-
-            listBoxIdentifiers.DataSource = lex.identifiers;
-            listBoxLiterals.DataSource = lex.literals;
-
-            MessageBox.Show(result);
-        }
-
-        
+            if (this.richTextBox1.Text!="")
+            {
+                LexicAnalyzer lex = new LexicAnalyzer();
+                var result = lex.DoWork(this.richTextBox1.Text);
+                listBoxIdentifiers.DataSource = lex.identifiers;
+                listBoxLiterals.DataSource = lex.literals;
+                MessageBox.Show(result);
+            }
+        }       
     }
 }
